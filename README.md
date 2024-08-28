@@ -76,8 +76,23 @@ Answers were received with `candump can0`
 - [`90` Set the Parameter of Home](#90-set-the-parameter-of-home)
 - [`91` Go Home](#91-go-home)
 - [`92` Set Current Axis to Zero](#92-set-current-axis-to-zero)
+- [`3F` Restore the Default Parameter](#3f-restore-the-default-parameter)
+- [`F1` Query the Motor Status](#f1-query-the-motor-status)
+- [`F3` Enable/Disable the Motor](#f3-enable-disable-the-motor)
+- [`F6` Run the Motor in Speed Mode](#f6-run-the-motor-in-speed-mode)
+- [`F6` Stop the Motor in Speed Mode](#f6-stop-the-motor-in-speed-mode)
+- [`FF` Save/Clear the Parameter in Speed Mode](#ff-save-clear-the-parameter-in-speed-mode)
+- [`FD` Run the Motor in Position Mode1](#fd-run-the-motor-in-position-mode1)
+- [`FD` Stop the Motor in Position Mode1](#fd-stop-the-motor-in-position-mode1)
+- [`F4` Run the Motor in Position Mode2](#f4-run-the-motor-in-position-mode2)
+- [`FD` Stop the Motor in Position Mode2](#fd-stop-the-motor-in-position-mode2)
+- [`F5` Run the Motor in Position Mode3](#f5-run-the-motor-in-position-mode3)
+- [`F5` Stop the Motor in Position Mode3](#f5-stop-the-motor-in-position-mode3)
 
 ---
+<details>
+<summary>Click to expand!</summary>
+ 
 ### `30` Read the Encoder Value (Carry)
 
 | Command    | Answer                    | Comment |
@@ -559,3 +574,4 @@ Notes
 - If the motor is rotating more than 1000 RPM, it is not a good idea to stop the motor immediately.
 - The uplink frame provides status feedback on the stop command.
 
+</details>
