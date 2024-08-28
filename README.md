@@ -4,7 +4,6 @@ It will calculate proper CRC and execute cansend command with CRC applied.
 
 Tested with Raspberry Pi 5, Waveshare RS485 CAN HAT, MKS SERVO42D CAN MB.
 
-
 ## Installation
 Download `cansendsrc` file or git clone this repository
 
@@ -44,6 +43,41 @@ sudo ip link set can0 up type can bitrate 500000 #you need to set CanRate on the
 
 ## Commands for MKS SERVO42D CAN MB
 
+Commands are without CRC since we dont need it with `cansendcrc`
+
+`CanID` for the motor is `2`, thats why there are `002` before `#`
+
+Answers were received with `candump can0`
+
+# Table of Contents
+
+- [`30` Read the Encoder Value (Carry)](#30-read-the-encoder-value-carry)
+- [`31` Read the Encoder Value (Addition)](#31-read-the-encoder-value-addition)
+- [`30 32` Read the Real-Time Speed of the Motor (RPM)](#30-32-read-the-real-time-speed-of-the-motor-rpm)
+- [`33` Read the Number of Pulses Received](#33-read-the-number-of-pulses-received)
+- [`39` Read the Error of the Motor Shaft Angle](#39-read-the-error-of-the-motor-shaft-angle)
+- [`3A` Read the EN Pins Status](#3a-read-the-en-pins-status)
+- [`3B` Read the Go Back to Zero Status When Power On](#3b-read-the-go-back-to-zero-status-when-power-on)
+- [`3D` Release the Motor Shaft Locked-Rotor Protection State](#3d-release-the-motor-shaft-locked-rotor-protection-state)
+- [`3E` Read the Motor Shaft Protection State](#3e-read-the-motor-shaft-protection-state)
+- [`80 00` Calibrate the Encoder (Same as the "Cal" option on screen)](#80-00-calibrate-the-encoder-same-as-the-cal-option-on-screen)
+- [`82` Set the Work Mode (Same as the "Mode" option on screen)](#82-set-the-work-mode-same-as-the-mode-option-on-screen)
+- [`83` Set the Current (Same as the "Ma" option on screen)](#83-set-the-current-same-as-the-ma-option-on-screen)
+- [`84` Set Subdivision (Same as the "MStep" option on screen)](#84-set-subdivision-same-as-the-mstep-option-on-screen)
+- [`85` Set the Active of the EN Pin](#85-set-the-active-of-the-en-pin)
+- [`86` Set the Direction of Motor Rotation](#86-set-the-direction-of-motor-rotation)
+- [`87` Set Auto Turn Off the Screen Function](#87-set-auto-turn-off-the-screen-function)
+- [`88` Set the Motor Shaft Locked-Rotor Protection Function](#88-set-the-motor-shaft-locked-rotor-protection-function)
+- [`89` Set the Subdivision Interpolation Function](#89-set-the-subdivision-interpolation-function)
+- [`8A` Set the CAN Bit Rate](#8a-set-the-can-bit-rate)
+- [`8B` Set the CAN ID](#8b-set-the-can-id)
+- [`8C` Set the Slave Respond](#8c-set-the-slave-respond)
+- [`8D` Set the Group ID](#8d-set-the-group-id)
+- [`90` Set the Parameter of Home](#90-set-the-parameter-of-home)
+- [`91` Go Home](#91-go-home)
+- [`92` Set Current Axis to Zero](#92-set-current-axis-to-zero)
+
+---
 ### `30` Read the Encoder Value (Carry)
 
 | Command    | Answer                    | Comment |
@@ -414,7 +448,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | Byte4: `02` (Acceleration) | | `0-255` (Acceleration value for deceleration) |
 | | Byte2: `01` (Status) | `status = 0` stop the motor fail, `status = 1` start to stop the motor, `status = 2` stop the motor success |
 
-### Notes
+Notes
 - If the motor is running faster than 1000 RPM, it is not advisable to use an immediate stop as it may cause mechanical issues. Use deceleration (`acc` ≠ 0) for safer stopping.
 
 ### `FF` Save/Clear the Parameter in Speed Mode
@@ -427,7 +461,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | Byte2: `C8` (State) | | `C8` - Save parameters, `CA` - Clear parameters |
 | | Byte2: `01` (Status) | `status = 1` success, `status = 0` fail |
 
-### Notes
+Notes
 - After saving or clearing parameters, the motor can rotate clockwise or counterclockwise at a constant speed when powered on.
 
 ### `FD` Run the Motor in Position Mode1
@@ -467,7 +501,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | Byte5-7: `00 40 00` or `FF C0 00` (Relative Axis) | | `Relative axis value` (24-bit signed integer) |
 | |Byte2: `01` (Status)              | `0` - Run fail, `1` - Run starting, `2` - Run complete |
 
-### Notes
+Notes
 - The axis value can be read by command "31".
 - In this mode, the axis error is about ±15.
 - It is suggested to run with 64 subdivisions.
@@ -486,7 +520,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | |                           | `02` - Deceleration and stop, `FE` - Immediate stop |
 | | Byte2: `02` (Status)         | `0` - Stop fail, `1` - Stop starting, `2` - Stop complete |
 
-### Notes
+Notes
 - The stop command can stop the motor slowly with deceleration (`acc ≠ 0`) or immediately (`acc = 0`).
 - If the motor is rotating more than 1000 RPM, it is not recommended to stop the motor immediately.
 
@@ -503,7 +537,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | Byte5-7: `00 40 00` or `FF C0 00` (Absolute Axis) | | `Absolute axis value` (24-bit signed integer) |
 | | Byte2: `01` (Status)         | `0` - Run fail, `1` - Run starting, `2` - Run complete |
 
-### Notes
+Notes
 - The axis value can be read by command "31".
 - In this mode, the axis error is about ±15.
 - It is suggested to run with 64 subdivisions.
@@ -521,8 +555,7 @@ Note: You can release the protection status by pressing the Enter button or send
 | Byte5-7: `00 00 00` (Unused) |                           | Not used in the stop command |
 | | Byte2: `01` (Status)         | `0` - Stop fail, `1` - Stop starting, `2` - Stop complete |
 
-### Notes
+Notes
 - If the motor is rotating more than 1000 RPM, it is not a good idea to stop the motor immediately.
 - The uplink frame provides status feedback on the stop command.
-
 
