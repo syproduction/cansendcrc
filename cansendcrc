@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Function to calculate 8-bit CRC
+calculate_crc() {
+    local can_id=$1
+    shift
+    local data_bytes=("$@")
+    local sum=$can_id
+
+    for byte in "${data_bytes[@]}"; do
+        sum=$((sum + byte))
+    done
+
+    # Apply modulo 256
+    crc=$((sum % 256))
+
+    printf "%02X" "$crc"
+}
+
+# Check if input is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <CAN_ID>#<data_bytes>"
+    exit 1
+fi
+
+# Parse input
+input=$1
+can_id_hex=$(echo "$input" | cut -d'#' -f1)
+data_bytes_hex=$(echo "$input" | cut -d'#' -f2)
+
+# Convert CAN ID from hex to decimal
+can_id=$((16#${can_id_hex}))
+
+# Convert data bytes from hex to decimal array
+data_bytes=($(echo "$data_bytes_hex" | sed 's/../0x& /g'))
+
+# Calculate CRC
+crc=$(calculate_crc "$can_id" "${data_bytes[@]}")
+
+# Construct the CAN message command
+can_message="${can_id_hex}#${data_bytes_hex}${crc}"
+
+# Print result
+echo "Calculated CRC: $crc"
+echo "cansend can0 $can_message"
+
+# Execute cansend command
+cansend can0 "$can_message"
