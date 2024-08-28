@@ -90,8 +90,6 @@ Answers were received with `candump can0`
 - [`F5` Stop the Motor in Position Mode3](#f5-stop-the-motor-in-position-mode3)
 
 ---
-<details>
-<summary>Click to expand!</summary>
  
 ### `30` Read the Encoder Value (Carry)
 
@@ -574,4 +572,3 @@ Notes
 - If the motor is rotating more than 1000 RPM, it is not a good idea to stop the motor immediately.
 - The uplink frame provides status feedback on the stop command.
 
-</details>
