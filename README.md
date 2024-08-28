@@ -36,8 +36,8 @@ cansend can0 002#f300F5`
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install can-utils -y
 echo -e "dtparam=spi=on\ndtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=2000000" | sudo tee -a /boot/firmware/config.txt
-//check oscillator on  RS485 CAN HAT is 12.000
+# check oscillator on  RS485 CAN HAT is 12.000
 sudo reboot now
 sudo ip link set can0 down
-sudo ip link set can0 up type can bitrate 500000 //you need to set CanRate on the motor to 500k manually
+sudo ip link set can0 up type can bitrate 500000 #you need to set CanRate on the motor to 500k manually
 ```
