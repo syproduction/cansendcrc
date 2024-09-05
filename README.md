@@ -39,6 +39,8 @@ echo -e "dtparam=spi=on\ndtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25
 sudo reboot now
 sudo ip link set can0 down
 sudo ip link set can0 up type can bitrate 500000 #you need to set CanRate on the motor to 500k manually
+wget https://github.com/syproduction/cansendcrc/raw/main/cansendcrc
+sudo chmod +x cansendcrc
 ```
 
 ## Commands for MKS SERVO42D CAN MB
