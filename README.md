@@ -120,11 +120,11 @@ Answers were received with `candump can0`
 |            | Byte8: `3F` (CRC, checksum for the response data) |         |
 
 
-### `30 32` Read the Real-Time Speed of the Motor (RPM)
+### `32` Read the Real-Time Speed of the Motor (RPM)
 
 | Command    | Answer                    | Comment |
 |------------|---------------------------|---------|
-| `002#3032` | `can0  002   [4]  32 00 00 34` |         |
+| `002#32` | `can0  002   [4]  32 00 00 34` |         |
 | **Where**  |                           |         |
 |            | CAN ID: `002` (Identifier for the response) |         |
 |            | DLC: `4` (Number of data bytes in the response) |         |
